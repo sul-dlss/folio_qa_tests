@@ -1,0 +1,18 @@
+{
+  "name": "folio_qa_testing",
+  "version": "0.0.1",
+  "description": "Quality Assurance Testing for SUL FOLIO migration and loading data",
+  "main": "index.js",
+  "scripts": {
+    "test": "cypress open"
+  },
+  "keywords": [
+    "folio",
+    "sul"
+  ],
+  "author": "Jeremy Nelson",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "cypress": "^9.2.0"
+  }
+}
