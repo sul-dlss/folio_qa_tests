@@ -23,3 +23,31 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+
+Cypress.Commands.add('authtoken', () => {
+  let authtoken = Cypress.env('OKAPI_TOKEN')
+  if (authtoken != null) {
+    cy.log(`Using x-okapi-token: ${authtoken}`)
+    return
+  } else {
+    cy.request({
+      method: 'POST',
+      url: Cypress.env('OKAPI_LOGIN_URL'),
+      headers: {
+        "X-Okapi-Tenant": Cypress.env('OKAPI_TENANT'),
+        "User-Agent": "FolioQATester",
+        "Accept": "application/json",
+        "Content-type": "application/json"
+      },
+      body: {
+        "username": Cypress.env('FOLIO_USER'),
+        "password": Cypress.env('FOLIO_PASSWORD')
+      }
+    }).then(
+      (response) => {
+        Cypress.env('OKAPI_TOKEN', response.headers['x-okapi-token'])
+        cy.log(`Setting x-okapi-token: ${Cypress.env('OKAPI_TOKEN')}`)
+      }
+    )
+  }
+})
