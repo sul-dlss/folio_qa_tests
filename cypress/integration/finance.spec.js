@@ -1,6 +1,4 @@
-// login.spec.js tests both successful and failure login
-
-const { it } = require("mocha")
+// finance.spec.js tests finance settings data
 
 
 describe('Validates finance reference data', () => {
@@ -26,11 +24,13 @@ describe('Validates finance reference data', () => {
       
     })
 
-    it('Checks for fund types', () => {
+    it('Opens Finance Module', () => {
       cy.get('#app-list-dropdown-toggle').click()
       // Opens Finance Module
       cy.get('#app-list-dropdown-item-clickable-finance-module').click({force: true})
+    })
 
+    it('Checks for fund types', () => {
       // Click on the Fund in the Search and Filter section
       cy.get('button:contains(Fund)').click()
       cy.get('#accordion-toggle-button-fundTypeId').click()
@@ -73,6 +73,43 @@ describe('Validates finance reference data', () => {
       cy.contains('Lane')
       cy.contains('Law')
       cy.contains('SUL')
+
+    })
+
+    it('Checks fiscal years', () => {
+      cy.get('button:contains(Fiscal year)').click()
+      cy.wait(2000)
+
+      // Checks for specific Fiscal Years
+      cy.contains('BUS2021')
+      cy.contains('LANEFY2022')
+      cy.contains('LAW2021')
+      cy.contains('SUL2022')
+
+      // Checks period begin and end dates for SUL 2022
+      cy.contains('SUL2022').click()
+
+      cy.wait(2000)
+
+      cy.get('#pane-fiscal-year-details').click()
+      cy.contains('09/01/2021')
+      cy.contains('08/31/2022')
+    })
+
+    it('Checks correct Ledgers with details', () => {
+      cy.get('button:contains(Ledger)').first().click()
+      cy.wait(2000)
+
+      // Checks for Ledger name and codes
+      cy.get('div:contains(Business)').siblings().contains('BUS')
+      cy.get('div:contains(Lane Fee)').siblings().contains('Lane Fee')
+      cy.contains('Law')
+
+      // Details for SUL Ledger
+      cy.get('div:contains(SUL)').first().click()
+
+      cy.contains('Current fiscal year')
+      cy.contains('SUL2022')
 
     })
 
