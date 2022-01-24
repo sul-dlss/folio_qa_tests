@@ -1,5 +1,7 @@
 // login.spec.js tests both successful and failure login
 
+const { it } = require("mocha")
+
 
 describe('Validates finance reference data', () => {
     it('Opens FOLIO ', () => {
@@ -58,13 +60,27 @@ describe('Validates finance reference data', () => {
       // Look for external account
       cy.contains('1065031-105-HAIUK')
 
-      // Reloads Finance module and wait
-      cy.get('#ModuleMainHeading').click()
-      cy.wait(2000)
+    })
+
+    it('Checks for Acquistions unit', () => {
+      // Opens Acquisitions unit drop-down
+      cy.get('#accordion-toggle-button-acqUnitIds').click()
+      cy.get('#acqUnitIds-selection').click()
+
+      cy.get('#sl-acqUnitIds-selection li').should('have.length', 4)
+
+      cy.contains('Business')
+      cy.contains('Lane')
+      cy.contains('Law')
+      cy.contains('SUL')
+
     })
 
     it('Logs out of FOLIO', () => {
-      
+      // Reloads Finance module and wait
+      cy.get('#ModuleMainHeading').click()
+      cy.wait(2000)
+
       cy.get('#profileDropdown button').first().click()
 
       cy.get('#clickable-logout').click()
