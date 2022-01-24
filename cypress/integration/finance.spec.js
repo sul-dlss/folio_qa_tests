@@ -113,6 +113,25 @@ describe('Validates finance reference data', () => {
 
     })
 
+    it('Checks for Groups', () => {
+      cy.get('button:contains(Group)').first().click()
+      cy.wait(2000)
+
+      cy.contains('78 records found')
+
+      // Specific Groups
+      cy.contains('EASTASIA')
+
+      cy.get('#groups-list > div').last().scrollTo('bottom')
+      cy.contains('GD-STATE')
+
+      // Check active status for Feminist
+      cy.get('div:contains(FEMINIST)').first().click()
+      cy.wait(2000)
+      cy.get('div:contains(Status)').siblings().contains('Active')
+
+    })
+
     it('Logs out of FOLIO', () => {
       // Reloads Finance module and wait
       cy.get('#ModuleMainHeading').click()
