@@ -22,32 +22,41 @@
 //
 //
 // -- This will overwrite an existing command --
+
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 
-Cypress.Commands.add('authtoken', () => {
-  let authtoken = Cypress.env('OKAPI_TOKEN')
-  if (authtoken != null) {
-    cy.log(`Using x-okapi-token: ${authtoken}`)
-    return
-  } else {
-    cy.request({
-      method: 'POST',
-      url: Cypress.env('OKAPI_LOGIN_URL'),
-      headers: {
-        "X-Okapi-Tenant": Cypress.env('OKAPI_TENANT'),
-        "User-Agent": "FolioQATester",
-        "Accept": "application/json",
-        "Content-type": "application/json"
-      },
-      body: {
-        "username": Cypress.env('FOLIO_USER'),
-        "password": Cypress.env('FOLIO_PASSWORD')
-      }
-    }).then(
-      (response) => {
-        Cypress.env('OKAPI_TOKEN', response.headers['x-okapi-token'])
-        cy.log(`Setting x-okapi-token: ${Cypress.env('OKAPI_TOKEN')}`)
-      }
-    )
+import localforage from 'localforage'
+
+Cypress.Commands.add('pageVisit', (path) => {
+  cy.visit(`${Cypress.env('FOLIO_URL')}/${path}`)
+})
+
+Cypress.Commands.add('login', () => {
+  const authtoken = localforage.getItem('okapiSess')
+  cy.log(authtoken)
+
+  if(isEmpty(authtoken)) {
+    cy.visit(Cypress.env('FOLIO_URL'))
+
+    const username = Cypress.env('FOLIO_USER')
+    const password = Cypress.env('FOLIO_PASSWORD')
+
+    cy.get('#input-username').clear()
+    cy.get('#input-username')
+      .type(username)
+    cy.get('#input-password')
+      .type(password)
+    cy.get('#clickable-login').click()
+
+    cy.wait(5000)
   }
 })
+
+Cypress.Commands.add('logout', () => {
+  cy.get('#profileDropdown button').first().click()
+  cy.get('#clickable-logout').click()
+})
+
+const isEmpty = (obj) => {
+  return Object.keys(obj).length === 0;
+}
