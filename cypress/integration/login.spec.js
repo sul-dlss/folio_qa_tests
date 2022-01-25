@@ -12,30 +12,17 @@ describe('Logs into SUL FOLIO Instance', () => {
         cy.get('#input-password')
           .type('not-a-valid-password')
         cy.get('#clickable-login').click()
-        
+
         cy.contains('This FOLIO account cannot be located. Please contact your FOLIO systems administrator.')
 
     })
 
     it('Log into FOLIO with a valid user credentials', () => {
-      const username = Cypress.env('FOLIO_USER')
-      const password = Cypress.env('FOLIO_PASSWORD')
-
-      cy.get('#input-username').clear()
-      cy.get('#input-username')
-        .type(username)
-      cy.get('#input-password')
-        .type(password)
-      cy.get('#clickable-login').click()
-
-      cy.wait(5000)
-
+      cy.login()
       cy.contains('Welcome, the Future Of Libraries Is OPEN!')
-      
     })
 
     it('Logs out of FOLIO', () => {
-      cy.get('#profileDropdown button').first().click()
-      cy.get('#clickable-logout').click()
+      cy.logout()
     })
 })

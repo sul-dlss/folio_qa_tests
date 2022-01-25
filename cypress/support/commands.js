@@ -33,7 +33,6 @@ Cypress.Commands.add('pageVisit', (path) => {
 
 Cypress.Commands.add('login', () => {
   const authtoken = localforage.getItem('okapiSess')
-  cy.log(authtoken)
 
   if(isEmpty(authtoken)) {
     cy.visit(Cypress.env('FOLIO_URL'))
