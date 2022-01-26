@@ -2,26 +2,12 @@
 
 
 describe('Validates finance reference data', () => {
-    it('Opens FOLIO ', () => {
-        cy.visit(Cypress.env('FOLIO_URL'))
-        cy.contains('Log in')
+    before(() => {
+      cy.login()
     })
 
-    it('Log into FOLIO with a valid user credentials', () => {
-      const username = Cypress.env('FOLIO_USER')
-      const password = Cypress.env('FOLIO_PASSWORD')
-
-      cy.get('#input-username').clear()
-      cy.get('#input-username')
-        .type(username)
-      cy.get('#input-password')
-        .type(password)
-      cy.get('#clickable-login').click()
-
-      cy.wait(5000)
-
-      cy.contains('Welcome, the Future Of Libraries Is OPEN!')
-      
+    after(() => {
+      cy.logout()
     })
 
     it('Opens Finance Module', () => {
@@ -130,15 +116,5 @@ describe('Validates finance reference data', () => {
       cy.wait(2000)
       cy.get('div:contains(Status)').siblings().contains('Active')
 
-    })
-
-    it('Logs out of FOLIO', () => {
-      // Reloads Finance module and wait
-      cy.get('#ModuleMainHeading').click()
-      cy.wait(2000)
-
-      cy.get('#profileDropdown button').first().click()
-
-      cy.get('#clickable-logout').click()
     })
 })
