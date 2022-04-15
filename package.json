@@ -12,8 +12,8 @@
   ],
   "author": "Jeremy Nelson",
   "license": "Apache-2.0",
-  "dependencies": {
-    "cypress": "^9.2.0",
-    "localforage": "^1.10.0"
+  "dependencies": {},
+  "devDependencies": {
+    "cypress": "^9.5.4"
   }
 }
