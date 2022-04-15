@@ -1,7 +1,9 @@
 // tenantSettings.spec.js tests that the tenant settings exist
 describe('FOLIO Tenant Settings', () => {
   before(() => {
-    cy.login()
+    const userEnv = Cypress.env('ADMIN_USER')
+    const passEnv = Cypress.env('ADMIN_PASS')
+    cy.login(userEnv, passEnv)
   })
 
   after(() => {
@@ -55,6 +57,6 @@ describe('FOLIO Tenant Settings', () => {
     cy.wait(500)
     cy.get('select#librarySelect').children('option').contains('Branner Earth Sciences (EARTH-SCI)')
     cy.get('select#librarySelect').select('Cecil H. Green (GREEN)')
-    cy.contains('GREEN-STACKS')
+    cy.contains('GRE-STACKS')
   })
 })

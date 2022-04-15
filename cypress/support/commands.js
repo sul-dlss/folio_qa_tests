@@ -25,37 +25,25 @@
 
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 
-import localforage from 'localforage'
-
 Cypress.Commands.add('pageVisit', (path) => {
   cy.visit(`${Cypress.env('FOLIO_URL')}/${path}`)
 })
 
-Cypress.Commands.add('login', () => {
-  const authtoken = localforage.getItem('okapiSess')
+Cypress.Commands.add('login', (userEnv, passEnv) => {
 
-  if(isEmpty(authtoken)) {
-    cy.visit(Cypress.env('FOLIO_URL'))
+  cy.visit(Cypress.env('FOLIO_URL'))
 
-    const username = Cypress.env('FOLIO_USER')
-    const password = Cypress.env('FOLIO_PASSWORD')
+  cy.get('#input-username').clear()
+  cy.get('#input-username')
+    .type(userEnv)
+  cy.get('#input-password')
+    .type(passEnv)
+  cy.get('#clickable-login').click()
 
-    cy.get('#input-username').clear()
-    cy.get('#input-username')
-      .type(username)
-    cy.get('#input-password')
-      .type(password)
-    cy.get('#clickable-login').click()
-
-    cy.wait(5000)
-  }
+  cy.wait(10000)
 })
 
 Cypress.Commands.add('logout', () => {
   cy.get('#profileDropdown button').first().click()
   cy.get('#clickable-logout').click()
 })
-
-const isEmpty = (obj) => {
-  return Object.keys(obj).length === 0;
-}
