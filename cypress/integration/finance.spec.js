@@ -3,7 +3,9 @@
 
 describe('Validates finance reference data', () => {
     before(() => {
-      cy.login()
+      const userEnv = Cypress.env('FOLIO_USER')
+      const passEnv = Cypress.env('FOLIO_PASS')
+      cy.login(userEnv, passEnv)
     })
 
     after(() => {
@@ -29,11 +31,11 @@ describe('Validates finance reference data', () => {
       // Confirms values first and last fund types in drop-down
       cy.contains('Business-Data')
       cy.get('#sl-fundTypeId-selection').scrollTo('bottom')
-      cy.contains('SUL-OPERATING')
+      cy.contains('SUL-Operating')
       cy.wait(5000)
 
       // Checks SUL-GIFT Fund records
-      cy.contains('SUL-GIFT').parent().click()
+      cy.contains('SUL-Gift').parent().click()
  
       cy.contains('13 records found')
       cy.contains('DUPSOLD')
@@ -75,8 +77,8 @@ describe('Validates finance reference data', () => {
       // Checks period begin and end dates for SUL 2022
       cy.contains('SUL2022').click()
 
-      cy.wait(2000)
-
+      cy.wait(10000)
+    
       cy.get('#pane-fiscal-year-details').click()
       cy.contains('09/01/2021')
       cy.contains('08/31/2022')
@@ -93,6 +95,8 @@ describe('Validates finance reference data', () => {
 
       // Details for SUL Ledger
       cy.get('div:contains(SUL)').first().click()
+
+      cy.wait(10000)
 
       cy.contains('Current fiscal year')
       cy.contains('SUL2022')
