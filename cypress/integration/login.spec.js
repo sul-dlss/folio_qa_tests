@@ -18,7 +18,9 @@ describe('Logs into SUL FOLIO Instance', () => {
     })
 
     it('Log into FOLIO with a valid user credentials', () => {
-      cy.login()
+      const userEnv = Cypress.env('FOLIO_USER')
+      const passEnv = Cypress.env('FOLIO_PASS')
+      cy.login(userEnv, passEnv)
       cy.contains('Welcome, the Future Of Libraries Is OPEN!')
     })
 
